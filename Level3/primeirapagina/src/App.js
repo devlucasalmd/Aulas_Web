@@ -1,6 +1,6 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-
+import HelloWorld from "./components/HelloWorld" //importando o componente
 
 function App() {
   const name = "Lucas" // Normalmente vem de algum lugar (Banco de Dados)
@@ -20,6 +20,7 @@ function App() {
         <p>Olá {name}</p>
         <p>Soma: {sum(2,2)}</p>
         <img src={url} alt="IMagem"/> //url dinamica
+        <HelloWorld/>
     </div>
   );
 }
