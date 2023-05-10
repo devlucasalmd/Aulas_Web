@@ -1,11 +1,8 @@
 function Frase() {
 
-
   return (
-        <div>
-            Frase:
-        </div>
+        <p>Frase:</p>
     )
 }
 
-export default Frase
+export default Frase;
