@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {Jumbotron, Button, Modal, InputGroup, FormControl, Container} from 'react-bootstrap'
 import Note from './Note';
+import api from '../Api';
+import axios from 'axios';
 
 function Notes() {
 
@@ -10,16 +12,29 @@ function Notes() {
 
   const [notesList, setNotesList] = useState([]);
 
-  function saveNotes(notes) {
+
+  async function GetAll(){
+    var res = await api.get('/notes');
+    setNotesList(res.data);
+  }
+
+  useEffect(() => {
+    GetAll();
+  }, [0]);
+
+  async function saveNotes() {
     const note = {
       date: document.getElementById('inputDate').value,
       title: document.getElementById('inputTitle').value,
       description: document.getElementById('inputDescription').value,
     }
 
-    const copy = [...notesList];
-    copy.push(note);
-    setNotesList(copy);
+    axios.post('http://localhost:3000/api/notes', note)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err))
+
+    GetAll();
+
     setShow(false);
 
   }
@@ -34,7 +49,7 @@ function Notes() {
       </div>
 
       <Container fluid>
-        {notesList.map(item => <Note title={item.title} date={item.date} description={item.description}/>)}
+        {notesList.map(item => <Note title={item.title} date={item.date} description={item.description} id={item.id} getAll={GetAll}/>)}
       </Container>
 
       <Modal show={show} onHide={handleClose} >

@@ -1,4 +1,5 @@
 const Notes = require("../models/notesModel");
+const { post } = require("../routes/index.routes");
 
 module.exports = {
     async all(req, res){
@@ -33,6 +34,17 @@ module.exports = {
         }
     },
     
+    async post(req, res){
+        try {
+            
+        } catch (error) {
+            
+        }
+    
+    
+    },
+
+
     async update(req, res){
         try{
             const {date, title, description} = req.body;

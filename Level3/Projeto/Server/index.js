@@ -8,6 +8,6 @@ sequelize.sync().then(() => console.log('database connected successfully'));
 app.use(express.json());
 app.use("/api/notes", notesRoutes);
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log('Server started on port 3000');
 });
