@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import {Jumbotron, Button, Modal, InputGroup, FormControl, Container} from 'react-bootstrap'
 import Note from './Note';
-import api from '../Api';
 import axios from 'axios';
 
 function Notes() {
-  const [note,setNote] = useState({title: '',description: '',data:''})
-  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [note,setNote] = useState({date: '',title: '',description:''})
+  const [show, setShow] = useState(false);
   const [notesList, setNotesList] = useState([]);
 
   function GetAll(){
@@ -18,12 +16,29 @@ function Notes() {
       .catch(err => console.error(err))
   }
 
+  useEffect(() => {
+    GetAll()
+  }, []);
   
   function saveNotes(){
-    axios.post('http://localhost:3001/notes', {note})
-      .then(res => console.log('Deu certo'))
+    let {date, title, description} = note;
+    axios.post('http://localhost:3001/notes', {date, title, description})
+      .then(res => {
+        console.log('Deu certo')
+        setNotesList([...notesList, res.data]);
+        setShow(false); 
+      })
       .catch(err => console.log(err))
 
+  }
+  
+  function deleteNote(id){
+    axios.delete(`http://localhost:3001/notes/${id}`)
+      .then(res=>{
+        console.log(res.data)
+        setNotesList(notesList.filter( n => n.id !== id ))
+      })
+      .catch(erro=>console.log(erro))
   }
 
   return (
@@ -36,7 +51,15 @@ function Notes() {
       </div>
 
       <Container fluid>
-        {notesList.map(item => <Note title={item.title} date={item.date} description={item.description} id={item.id} getAll={GetAll}/>)}
+        {notesList.map(item => 
+          <Note 
+            title={item.title} 
+            date={item.date} 
+            description={item.description} 
+            id={item.id} 
+            key={item.key}
+            deleteNote={deleteNote}
+          />)}
       </Container>
 
       <Modal show={show} onHide={handleClose} >
