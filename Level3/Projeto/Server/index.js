@@ -2,7 +2,9 @@ const express = require('express');
 const sequelize = require("./config/database");
 const notesRoutes = require("./routes/index.routes")
 const app = express();
+const cors = require('cors');
 
+app.use(cors());
 app.use(express.json());
 app.use("/notes", notesRoutes);
 

@@ -5,45 +5,32 @@ import api from '../Api';
 import axios from 'axios';
 
 function Notes() {
-
+  const [note,setNote] = useState({title: '',description: '',data:''})
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [notesList, setNotesList] = useState([]);
 
-
-  async function GetAll(){
-    var res = await api.get('/notes');
-    setNotesList(res.data);
+  function GetAll(){
+    axios.get('http://localhost:3001/notes')
+      .then(res => console.log(res))
+      .catch(err => console.error(err))
   }
 
-  useEffect(() => {
-    GetAll();
-  }, [0]);
-
-  async function saveNotes() {
-    const note = {
-      date: document.getElementById('inputDate').value,
-      title: document.getElementById('inputTitle').value,
-      description: document.getElementById('inputDescription').value,
-    }
-
-    axios.post('http://localhost:3001/notes', note)
-      .then(res => console.log(res.data))
+  
+  function saveNotes(){
+    axios.post('http://localhost:3001/notes', {note})
+      .then(res => console.log('Deu certo'))
       .catch(err => console.log(err))
-
-    GetAll();
-
-    setShow(false);
 
   }
 
   return (
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <h1 class='display-4'>Minhas Anotações</h1>
-        <p class="lead">Usa a janela para adicionar anotações!</p>
+    <div className="jumbotron jumbotron-fluid">
+      <div className="container">
+        <h1 className='display-4'>Minhas Anotações</h1>
+        <p className="lead">Usa a janela para adicionar anotações!</p>
         <Button variant="dark" onClick={handleShow}>Criar</Button>
         <br/>
       </div>
@@ -61,21 +48,21 @@ function Notes() {
 
           <InputGroup>
               <InputGroup.Text>Data</InputGroup.Text>
-            <input type="date" id="inputDate"/>
+            <input onChange={(e)=>setNote({...note,data: e.target.value})} type="date" id="inputDate"/>
           </InputGroup>
 
           <br/>
 
           <InputGroup>
               <InputGroup.Text>Titulo</InputGroup.Text>
-            <FormControl id="inputTitle"/>
+            <FormControl onChange={(e)=>setNote({...note,title: e.target.value})} id="inputTitle"/>
           </InputGroup>
 
           <br/>
 
           <InputGroup>
-              <InputGroup.Text>Descrição</InputGroup.Text>
-            <FormControl id="inputDescription"/>
+              <InputGroup.Text >Descrição</InputGroup.Text>
+            <FormControl onChange={(e)=>setNote({...note,description: e.target.value})} id="inputDescription"/>
           </InputGroup>
         </Modal.Body>
 
