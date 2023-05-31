@@ -1,25 +1,22 @@
-const { Model, DataTypes} = require("sequelize");
-const sequelize = require ("../config/database");
+const Sequelize = require('sequelize');
+const sequelize = require('../config/database');
 
-class Notes extends Model{}
-
-Notes.init (
-    {
+const Note = sequelize.define('Note', {
         date: {
-            type: DataTypes.DATE,
+            type: Sequelize.DATE,
+            allowNull: false
         },
         title: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true
         },
         description: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
+            allowNull: false
         },
     },
-    {
-        sequelize,
-        modelName: "notes",
-        timestamps: false,
-    }
+    
 );
 
-module.exports = Notes;
+module.exports = Note;

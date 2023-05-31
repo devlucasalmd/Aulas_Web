@@ -3,8 +3,8 @@ const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
     {
-        host: 'localhost',
-        dialect: 'sqlite'
+        dialect:'sqlite',
+        storage: '../db/database.sqlite'
     }
 )
  

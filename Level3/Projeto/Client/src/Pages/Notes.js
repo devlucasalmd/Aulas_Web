@@ -29,7 +29,7 @@ function Notes() {
       description: document.getElementById('inputDescription').value,
     }
 
-    axios.post('http://localhost:3000/api/notes', note)
+    axios.post('http://localhost:3001/notes', note)
       .then(res => console.log(res.data))
       .catch(err => console.log(err))
 

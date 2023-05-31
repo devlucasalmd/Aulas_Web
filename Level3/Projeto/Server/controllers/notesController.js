@@ -1,83 +1,70 @@
-const Notes = require("../models/notesModel");
-const { post } = require("../routes/index.routes");
+const Note = require("../models/notesModel");
 
-module.exports = {
-    async all(req, res){
+module.exports = class notesController{
+    static async getAll(req, res){
         try{
-            const notes = await Notes.findAll();
+            const notes = await Note.findAll();
             res.status(200).json(notes);
         } catch(error){
             res.status(400).send({ error: error});
         }
-    },
-
-    async one(req, res){
+    }
+    static async notesId(req, res){
         try {
-            const id = req.params.id;
-            const notes = await Notes.findOne({ where: {id}});
-
-            if(!notes) {
-                return res.status(400).json("Notes not found");
+            const { id } = req.params;
+            const note = await Note.findByPk(id);
+            if(note) {
+                return res.status(200).json(note);
+            } else {
+                res.status(404).json({error: 'Note Not Found'});
             }
-            res.status(200).json(notes);
-        } catch {
-            res.status(400).send({error: error})
+        } catch (error) {
+            res.status(500).send({error: error})
         }
-    },
+    }
 
-    async create(req, res){
+    static async createNote(req, res){
       try{
-            await Notes.create(req.body);
+            const {title, description, date } = req.body;
+            const note = await Note.create({title, description, date});            
             res.status(200).json("Notes inserted successfully");
         } catch (error){
-            res.status(400).send({ error: error});
+            res.status(500).json({ error: error});
         }
-    },
-    
-    async post(req, res){
-        try {
-            
-        } catch (error) {
-            
-        }
-    
-    
-    },
+    }
 
-
-    async update(req, res){
+    static async updateNote(req, res){
         try{
-            const {date, title, description} = req.body;
-            const id = req.params.id;
+            const { id } = req.params;
+            const {date, title, description} = req.body;            
 
-            const notes = await Notes.findOne({ where: { id} });
-            if(!notes) {
-                return res.status(404).send({ error: "Notes not found." });
+            const note = await Note.findByPk(id);
+            if(note) {
+                note.date = date;
+                note.title = title;
+                note.description = description;
+                await note.save();
+                res.status(201).json("Notes updated");
+            } else{
+                res.status(404).send({ error: "Notes not found." });
             }
-
-            notes.date = date;
-            notes.title = title;
-            notes.description = description;
-
-            await notes.save();
-            res.status(201).json("Notes updated");
         } catch (error) {
-            res.status(400).send({ error: error});
+            res.status(500).send({ error: error});
         }
-    },
+    }
 
-    async delete(req, res) {
+    static async deleteNote(req, res) {
         try {
-            const id = req.params.id;
-            const notes = await Notes.destroy({where: {id}});
-
-            if(!notes) {
-                return res.status(404).send({ error: "Notes not found." });
-            }
-            res.status(201).json("Notes removed");
-
+            const { id } = req.params;
+            const note = await Note.findByPk(id);
+            if(note) {
+                await note.destroy();
+                res.status(201).json("Notes removed");    
+            } else {
+                res.status(404).json({ error: "Notes not found." });
+            }    
         } catch (error) {
-            
+            res.status(500).json({ error: error });
         }
     }
 };

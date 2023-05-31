@@ -3,11 +3,12 @@ const sequelize = require("./config/database");
 const notesRoutes = require("./routes/index.routes")
 const app = express();
 
-sequelize.sync().then(() => console.log('database connected successfully'));
-
 app.use(express.json());
-app.use("/api/notes", notesRoutes);
+app.use("/notes", notesRoutes);
 
-app.listen(3001, () => {
-    console.log('Server started on port 3000');
+
+sequelize.sync().then(() => {
+    app.listen(3001, () => {
+        console.log('Server started on port 3001');
+    });
 });
