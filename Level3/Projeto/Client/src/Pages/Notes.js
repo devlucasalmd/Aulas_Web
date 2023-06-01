@@ -12,20 +12,23 @@ function Notes() {
 
   function GetAll(){
     axios.get('http://localhost:3001/notes')
-      .then(res => console.log(res))
+      .then(res => {
+        setNotesList(res.data);
+      })
+      
       .catch(err => console.error(err))
   }
 
   useEffect(() => {
     GetAll()
-  }, []);
+  },[]);
   
   function saveNotes(){
-    let {date, title, description} = note;
-    axios.post('http://localhost:3001/notes', {date, title, description})
+    let {date,title,description} = note;
+    axios.post('http://localhost:3001/notes', {date,title,description})
       .then(res => {
-        console.log('Deu certo')
-        setNotesList([...notesList, res.data]);
+        console.log('Deu certo',res.data)
+        setNotesList([...notesList, res.data.note]);
         setShow(false); 
       })
       .catch(err => console.log(err))
@@ -41,12 +44,68 @@ function Notes() {
       .catch(erro=>console.log(erro))
   }
 
+  function OrderNewest(){
+    var copy = [...notesList];
+
+    do{
+      var change = false;
+      var i = 0;
+      for(i=0; i<notesList.length-1; i++)
+      {
+        if(Date.parse(copy[i]).date < Date.parse(copy[i+1].date))
+        {
+          var aux = copy[i];
+          copy[i] = copy[i+1];
+          copy[i+1] = aux;
+          change = true;
+        }
+      }
+    }while (change == true);
+
+    setNotesList(copy);
+  }
+
+  function OrderOldest()
+    {
+        var copy = [...notesList];
+
+        do{
+          var change = false;
+          var i = 0;
+          for(i=0; i<notesList.length-1; i++)
+          {
+            if(Date.parse(copy[i]).date < Date.parse(copy[i+1].date))
+            {
+              var aux = copy[i];
+              copy[i] = copy[i+1];
+              copy[i+1] = aux;
+              change = true;
+            }
+          }
+        }while (change == true);
+
+        setNotesList(copy);
+    }
+    
+  //   setNotesList(notesList.filter(element => { 
+  //     if(element.date > ordem.date){
+  //       setNotesList = ordem.date;
+  //     }
+  //     console.log(notesList);
+  //   }))
+
+
   return (
     <div className="jumbotron jumbotron-fluid">
       <div className="container">
         <h1 className='display-4'>Minhas Anotações</h1>
         <p className="lead">Usa a janela para adicionar anotações!</p>
         <Button variant="dark" onClick={handleShow}>Criar</Button>
+        <br/>
+        <br/>
+        <br/>
+        <Button variant="info" onClick={()=> {OrderNewest();}}>Mais Recentes</Button>
+        <Button variant="secondary" onClick={()=> {OrderOldest();}}>Mais Antigos</Button>
         <br/>
       </div>
 
@@ -57,7 +116,7 @@ function Notes() {
             date={item.date} 
             description={item.description} 
             id={item.id} 
-            key={item.key}
+            key={item.id}
             deleteNote={deleteNote}
           />)}
       </Container>
@@ -71,7 +130,7 @@ function Notes() {
 
           <InputGroup>
               <InputGroup.Text>Data</InputGroup.Text>
-            <input onChange={(e)=>setNote({...note,data: e.target.value})} type="date" id="inputDate"/>
+            <input onChange={(e)=>setNote({...note,date: e.target.value})} type="date" id="inputDate"/>
           </InputGroup>
 
           <br/>

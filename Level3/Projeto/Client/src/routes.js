@@ -1,10 +1,10 @@
 import App from './App';
 import About from './Pages/About';
 import Notes from './Pages/Notes';
-import Main from './Pages/Main';
 import Blog from './Pages/Blog';
 import Noticias from './Pages/Noticias';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Root from './Pages/Root';
 
 export const router = createBrowserRouter([
     {
@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
       children: [
         {
           path: "/",
-          element: <Main/>,
+          element: <Root/>,
         },
         {
           path: "about",

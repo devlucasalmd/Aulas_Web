@@ -5,12 +5,12 @@ import {BrowserRouter as Router, Switch, Route, Link, BrowserRouter} from 'react
 import About from './About'
 import Notes from './Notes'
 
-function Main() {
+function NavBar() {
 
   return (
     <>
       <Navbar bg="dark" variant='dark'>
-        <Navbar.Brand>Web Lucas</Navbar.Brand>
+        <Navbar.Brand><Link to="/">Web Lucas</Link></Navbar.Brand>
         <nav>
           <Link to="/about">Sobre</Link>
           <Link to="/notes">Anotações</Link>
@@ -23,4 +23,4 @@ function Main() {
   )
 }
 
-export default Main
+export default NavBar;

@@ -27,7 +27,7 @@ module.exports = class notesController{
       try{
             const {title, description, date } = req.body;
             const note = await Note.create({title, description, date});            
-            res.status(200).json("Notes inserted successfully");
+            res.status(200).json({message:"Notes inserted successfully", note:{title, description, date}});        
         } catch (error){
             res.status(500).json({ error: error});
         }
