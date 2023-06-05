@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import {Jumbotron, Button, Modal, InputGroup, FormControl, Container} from 'react-bootstrap'
+import {Modal, Container} from 'react-bootstrap'
 import axios from 'axios';
 import blogPost from './BlogPost';
+import "../Styles/Botoes.css";
+import "../Styles/Blog.css";
 
 function Blog() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [note,setNote] = useState({date: '',title: '',description:'', image: ''})
+  const [blog,setBlog] = useState({date: '',title: '',description:'', image: ''})
   const [show, setShow] = useState(false);
-  const [notesList, setNotesList] = useState([]);
+  const [blogList, setBlogList] = useState([]);
 
   function GetAll(){
     axios.get('http://localhost:3001/blog')
       .then(res => {
-        setNotesList(res.data);
+        setBlogList(res.data);
       })
       
       .catch(err => console.error(err))
@@ -23,69 +25,69 @@ function Blog() {
     GetAll()
   },[]);
   
-  function saveNotes(){
-    let {date,title,description,image} = note;
+  function saveBlog(){
+    let {date,title,description,image} = blog;
     axios.post('http://localhost:3001/blog', {date,title,description,image})
       .then(res => {
         console.log('Deu certo',res.data)
-        setNotesList([...notesList, res.data.note]);
+        setBlogList([...blogList, res.data.note]);
         setShow(false); 
       })
       .catch(err => console.log(err))
 
   }
   
-  function deleteNote(id){
+  function deleteBlog(id){
     axios.delete(`http://localhost:3001/blog/${id}`)
       .then(res=>{
         console.log(res.data)
-        setNotesList(notesList.filter( n => n.id !== id ))
+        setBlogList(blogList.filter( n => n.id !== id ))
       })
       .catch(erro=>console.log(erro))
   }
 
-  function OrderNewest(){
-    var copy = [...notesList];
+  // function OrderNewest(){
+  //   var copy = [...blogList];
 
-    do{
-      var change = false;
-      var i = 0;
-      for(i=0; i<notesList.length-1; i++)
-      {
-        if(Date.parse(copy[i]).date < Date.parse(copy[i+1].date))
-        {
-          var aux = copy[i];
-          copy[i] = copy[i+1];
-          copy[i+1] = aux;
-          change = true;
-        }
-      }
-    }while (change == true);
+  //   do{
+  //     var change = false;
+  //     var i = 0;
+  //     for(i=0; i<blogList.length-1; i++)
+  //     {
+  //       if(Date.parse(copy[i]).date < Date.parse(copy[i+1].date))
+  //       {
+  //         var aux = copy[i];
+  //         copy[i] = copy[i+1];
+  //         copy[i+1] = aux;
+  //         change = true;
+  //       }
+  //     }
+  //   }while (change === true);
 
-    setNotesList(copy);
-  }
+  //   setBlogList(copy);
+  // }
 
-  function OrderOldest()
-    {
-        var copy = [...notesList];
+  // function OrderOldest()
+  //   {
+  //       var copy = [...blogList];
 
-        do{
-          var change = false;
-          var i = 0;
-          for(i=0; i<notesList.length-1; i++)
-          {
-            if(Date.parse(copy[i]).date < Date.parse(copy[i+1].date))
-            {
-              var aux = copy[i];
-              copy[i] = copy[i+1];
-              copy[i+1] = aux;
-              change = true;
-            }
-          }
-        }while (change == true);
+  //       do{
+  //         var change = false;
+  //         var i = 0;
+  //         for(i=0; i<blogList.length-1; i++)
+  //         {
+  //           if(Date.parse(copy[i]).date < Date.parse(copy[i+1].date))
+  //           {
+  //             var aux = copy[i];
+  //             copy[i] = copy[i+1];
+  //             copy[i+1] = aux;
+  //             change = true;
+  //           }
+  //         }
+  //       }while (change === true);
 
-        setNotesList(copy);
-    }
+  //       setBlogList(copy);
+  //   }
     
   //   setNotesList(notesList.filter(element => { 
   //     if(element.date > ordem.date){
@@ -96,29 +98,29 @@ function Blog() {
 
 
   return (
-    <div className="jumbotron jumbotron-fluid">
-      <div className="container">
+    <div className="container">
+      <div className="painel">
         <h1 className='display-4'>Meu Blog</h1>
         <p className="lead">Acompanhe aqui atualizações sobre o dia a dia</p>
-        <Button variant="dark" onClick={handleShow}>Criar Nova Postagem</Button>
+        <button className='postagem' onClick={handleShow}>Criar Nova Postagem</button>
         <br/>
         <br/>
         <br/>
-        <Button variant="info" onClick={()=> {OrderNewest();}}>Mais Recentes</Button>
-        <Button variant="secondary" onClick={()=> {OrderOldest();}}>Mais Antigos</Button>
+        <button className='recente' onClick={()=> {}}>Mais Recentes</button>
+        <button className='antigo' onClick={()=> {}}>Mais Antigos</button>
         <br/>
       </div>
 
       <Container fluid>
-        {notesList.map(item => 
-          <Blog 
+        {blogList.map(item => 
+          <blogPost 
             title={item.title} 
             date={item.date} 
             description={item.description}
             image = {item.image}
             id={item.id} 
             key={item.id}
-            deleteNote={deleteNote}
+            deleteNote={deleteBlog}
           />)}
       </Container>
 
@@ -127,39 +129,30 @@ function Blog() {
           <Modal.Title>Nova Anotação</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
-
-          <InputGroup>
-              <InputGroup.Text>Data</InputGroup.Text>
-            <input onChange={(e)=>setNote({...note,date: e.target.value})} type="date" id="inputDate"/>
-          </InputGroup>
-
-          <br/>
-
-          <InputGroup>
-              <InputGroup.Text>Titulo</InputGroup.Text>
-            <FormControl onChange={(e)=>setNote({...note,title: e.target.value})} id="inputTitle"/>
-          </InputGroup>
-
-          <br/>
-
-          <InputGroup>
-              <InputGroup.Text >Descrição</InputGroup.Text>
-            <FormControl onChange={(e)=>setNote({...note,description: e.target.value})} id="inputDescription"/>
-          </InputGroup>
+        <Modal.Body className='card'>          
+          <label>Data:</label>
+          <input onChange={(e)=>setBlog({...blog,date: e.target.value})} type="date" id="inputDate"/>
+          
+          <br/>      
+          
+          <label>Titulo:</label>
+          <input onChange={(e)=>setBlog({...blog,title: e.target.value})} id="inputTitle"/>        
           
           <br/>
-
-          <InputGroup>
-              <InputGroup.Text >Imagem</InputGroup.Text>
-            <FormControl onChange={(e)=>setNote({...note,description: e.target.value})} id="inputImage"/>
-          </InputGroup>
-        
+                    
+          <label>Descrição:</label>
+          <input onChange={(e)=>setBlog({...blog,description: e.target.value})} id="inputDescription"/>
+                    
+          <br/>
+          
+          <label>Imagem:</label>
+          <input onChange={(e)=>setBlog({...blog,description: e.target.value})} id="inputImage"/>
+      
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary"onClick={handleClose}>Cancelar</Button>
-          <Button variant="primary" onClick={() => {saveNotes()}}>Adicionar</Button>
+          <button className='cancelar' onClick={handleClose}>Cancelar</button>
+          <button className='adicionar' onClick={() => {saveBlog()}}>Adicionar</button>
         </Modal.Footer>
       </Modal>
     </div>

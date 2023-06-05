@@ -1,23 +1,21 @@
 import React from 'react'
 import { Navbar, Nav } from 'react-bootstrap'
-import { useState } from 'react'
-import {BrowserRouter as Router, Switch, Route, Link, BrowserRouter} from 'react-router-dom'
-import About from './About'
-import Notes from './Notes'
+import {BrowserRouter as Route, Link, BrowserRouter} from 'react-router-dom'
 import Container from 'react-bootstrap/Container';
+import "../Styles/NavBar.css"
 
 function NavBar() {
 
   return (
     <>
-      <Navbar bg="dark" variant='dark'>
-        <Container>
+      <Navbar className='header'>
+        <Container className="header">
           <Navbar.Brand><Link to="/">Web Lucas</Link></Navbar.Brand>
           <Nav className="me-auto">
-            <Link to="/about">Sobre</Link>
-            <Link to="/notes">Anotações</Link>
-            <Link to="/blog">Blog</Link>
-            <Link to="/noticias">Notícias</Link>
+            <Link className='link'to="/about">Sobre</Link>
+            <Link className='link' to="/notes">Anotações</Link>
+            <Link className='link' to="/blog">Blog</Link>
+            <Link className="link" to="/noticias">Notícias</Link>
           </Nav>
         </Container>
       </Navbar>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import "../Styles/Root.css"
 
 function Root() {
 
@@ -11,12 +11,11 @@ function Root() {
 
     return (
         <>
-            <div class='container'>
-                <div>
+            <div class='ladding-page'>
+                <div className='login'>
                     <h1>Pagina Inicial</h1>
                     <h3>Faça o Login para poder acessar suas paginas</h3>
-                    <button>Login</button>
-                    
+                    <button className='login'>Login</button>                    
                 </div>
                 <br/>
                 <div className='sobre'>

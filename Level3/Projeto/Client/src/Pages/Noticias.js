@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {Jumbotron, Button, Modal, InputGroup, FormControl, Container} from 'react-bootstrap'
+import {Modal, Container} from 'react-bootstrap'
 import axios from 'axios';
 
 function Noticia() {
@@ -23,7 +23,7 @@ function Noticia() {
   },[]);
   
   function saveNotes(){
-    let {date,title,description,image} = note;
+    let {date,title,description,image,url,categoria} = note;
     axios.post('http://localhost:3001/noticias', {date,title,description,image,url,categoria})
       .then(res => {
         console.log('Deu certo',res.data)
@@ -95,24 +95,24 @@ function Noticia() {
 
 
   return (
-    <div className="jumbotron jumbotron-fluid">
-      <div className="container">
+    <div className="container">
+      <div className="painel">
         <h1 className='display-4'>Minhas Noticias</h1>
         <p className="lead">Acompanhe aqui minhas noticias mais interessantes do dia a dia</p>
-        <Button variant="dark" onClick={handleShow}>Criar Nova Postagem</Button>
+        <button className='postagem' onClick={handleShow}>Criar Nova Postagem</button>
         <br/>
         <br/>
         <br/>
-        <Button variant="info" >Mais Recentes</Button>
+        <button className='recente'>Mais Recentes</button>
         {/* onClick={()=> {OrderNewest();}} */}
-        <Button variant="secondary">Mais Antigos</Button>
+        <button className='antigo'>Mais Antigos</button>
         {/* onClick={()=> {OrderOldest();}} */}
         <br/>
       </div>
 
       <Container fluid>
         {notesList.map(item => 
-          <Noticia 
+          <noticiaPost
             title={item.title} 
             date={item.date} 
             description={item.description}
@@ -130,62 +130,49 @@ function Noticia() {
           <Modal.Title>Nova Anotação</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
-
-          <InputGroup>
-              <InputGroup.Text>Data</InputGroup.Text>
-            <input onChange={(e)=>setNote({...note,date: e.target.value})} type="date" id="inputDate"/>
-          </InputGroup>
+        <Modal.Body className='card'>
+          
+          <label>Data:</label>
+          <input onChange={(e)=>setNote({...note,date: e.target.value})} type="date" id="inputDate"/>          
 
           <br/>
 
-          <InputGroup>
-              <InputGroup.Text>Titulo</InputGroup.Text>
-            <FormControl onChange={(e)=>setNote({...note,title: e.target.value})} id="inputTitle"/>
-          </InputGroup>
+          <label>Titulo:</label>
+          <input onChange={(e)=>setNote({...note,title: e.target.value})} id="inputTitle"/>          
 
           <br/>
-
-          <InputGroup>
-              <InputGroup.Text >Descrição</InputGroup.Text>
-            <FormControl onChange={(e)=>setNote({...note,description: e.target.value})} id="inputDescription"/>
-          </InputGroup>
+          
+          <label>Descrição:</label>
+          <input onChange={(e)=>setNote({...note,description: e.target.value})} id="inputDescription"/>
+          
           
           <br/>
-
-          <InputGroup>
-              <InputGroup.Text >Imagem</InputGroup.Text>
-            <FormControl onChange={(e)=>setNote({...note,description: e.target.value})} id="inputImage"/>
-          </InputGroup>
+          
+          <label>Imagem:</label>
+          <input onChange={(e)=>setNote({...note,description: e.target.value})} id="inputImage"/>          
 
           <br/>
 
-          <InputGroup>
-              <InputGroup.Text >Fonte</InputGroup.Text>
-            <FormControl onChange={(e)=>setNote({...note,description: e.target.value})} id="inputFonte"/>
-          </InputGroup>
+          <label>Fonte:</label>
+          <input onChange={(e)=>setNote({...note,description: e.target.value})} id="inputFonte"/>          
 
           <br/>
 
-          <InputGroup>
-              <InputGroup.Text >Categoria</InputGroup.Text>
-              <select onChange={(e)=>setNote({...note,description: e.target.value})} id="inputCategory">
-                <option>Filmes</option>
-                <option>Series</option> 
-                <option>Animes</option> 
-                <option>Games</option> 
-                <option>Esportes</option> 
-                <option>Musicas</option>               
-              </select>
-          </InputGroup>
-        
-        
-        
+          <label>Categoria:</label>
+          <select onChange={(e)=>setNote({...note,description: e.target.value})} id="inputCategory">
+            <option>Filmes</option>
+            <option>Series</option> 
+            <option>Animes</option> 
+            <option>Games</option> 
+            <option>Esportes</option> 
+            <option>Musicas</option>               
+          </select>
+                                  
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary"onClick={handleClose}>Cancelar</Button>
-          <Button variant="primary" onClick={() => {saveNotes()}}>Adicionar</Button>
+          <button className='cancelar' onClick={handleClose}>Cancelar</button>
+          <button className='adicionar' onClick={() => {saveNotes()}}>Adicionar</button>
         </Modal.Footer>
       </Modal>
     </div>
