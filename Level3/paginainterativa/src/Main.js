@@ -62,9 +62,9 @@ function Main() {
                 <br/>
                 <Fade when={showInfo}>
                     <div>
-                        <button onClick={() => ChangeImage("/img/crosta.png", tagCrosta)}> CROSTA </button>
-                        <button onClick={() => ChangeImage("/img/manto.png", tagManto)}> MANTO </button>
-                        <button onClick={() => ChangeImage("/img/nucleo.png", tagNucleo)}> NÚCLEO </button>                        
+                        <button className='crosta' onClick={() => ChangeImage("/img/crosta.png", tagCrosta)}> CROSTA </button>
+                        <button className='manto' onClick={() => ChangeImage("/img/manto.png", tagManto)}> MANTO </button>
+                        <button className='nucleo' onClick={() => ChangeImage("/img/nucleo.png", tagNucleo)}> NÚCLEO </button>                        
                     </div>
                 </Fade>
                 <br/>
