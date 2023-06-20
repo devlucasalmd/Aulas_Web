@@ -14,7 +14,8 @@ function Root() {
             <div class='ladding-page'>
                 <div className='login'>
                     <h1>Pagina Inicial</h1>
-                    <h3>Faça o Login para poder acessar suas paginas</h3>               
+                    <h3>Faça o Login para poder acessar suas paginas</h3>
+                    <button className='login'>Login</button>                    
                 </div>
                 <br/>
                 <div className='sobre'>

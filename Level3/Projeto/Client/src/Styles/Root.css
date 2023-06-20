@@ -1,24 +1,27 @@
 .ladding-page{
-    background-color: rgb(199, 198, 198);
     text-align: center;
 }
 
 .login{
+    padding: auto;
     background-color: rgb(199, 198, 198);
     color: black;
 }
 
 .sobre{
+    background-color: rgb(6, 33, 59);
     color: black;
     text-align: center;
 }
 
 .anotacoes{
+    background-color: rgb(199, 198, 198);
     color: black;
     text-align: center;
 }
 
 .blog{
+    background-color: rgb(6, 33, 59);
     color: black;
     text-align: center;
 }

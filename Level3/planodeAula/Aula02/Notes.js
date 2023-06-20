@@ -35,11 +35,11 @@ function Notes() {
       .catch(err => console.log(err))
 
   }
-  
+
   function updateNote(id){
 
   }
-
+  
   function deleteNote(id){
     axios.delete(`http://localhost:3001/notes/${id}`)
       .then(res=>{
@@ -48,57 +48,6 @@ function Notes() {
       })
       .catch(erro=>console.log(erro))
   }
-
-  // function OrderNewest(){
-  //   var copy = [...notesList];
-
-  //   do{
-  //     var change = false;
-  //     var i = 0;
-  //     for(i=0; i<notesList.length-1; i++)
-  //     {
-  //       if(Date.parse(copy[i]).date < Date.parse(copy[i+1].date))
-  //       {
-  //         var aux = copy[i];
-  //         copy[i] = copy[i+1];
-  //         copy[i+1] = aux;
-  //         change = true;
-  //       }
-  //     }
-  //   }while (change == true);
-
-  //   setNotesList(copy);
-  // }
-
-  // function OrderOldest()
-  //   {
-  //       var copy = [...notesList];
-
-  //       do{
-  //         var change = false;
-  //         var i = 0;
-  //         for(i=0; i<notesList.length-1; i++)
-  //         {
-  //           if(Date.parse(copy[i]).date < Date.parse(copy[i+1].date))
-  //           {
-  //             var aux = copy[i];
-  //             copy[i] = copy[i+1];
-  //             copy[i+1] = aux;
-  //             change = true;
-  //           }
-  //         }
-  //       }while (change == true);
-
-  //       setNotesList(copy);
-  //   }
-    
-  //   setNotesList(notesList.filter(element => { 
-  //     if(element.date > ordem.date){
-  //       setNotesList = ordem.date;
-  //     }
-  //     console.log(notesList);
-  //   }))
-
 
   return (
     <div className="container">
